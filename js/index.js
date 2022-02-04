@@ -24,12 +24,13 @@ window.addEventListener('DOMContentLoaded', () => {
   start.addEventListener('click', function (e) {
     document.querySelector('#quizBlock').style.display = 'block';
     start.style.display = 'none';
-    let quizTime = 60;
+    let quizTime = 3;
  const timer = document.querySelector("#time");
 
  const quizCountDown = () => {
       if (quizTime === 0) {
         clearInterval(countDown);
+        calculateScore()
       } else {
         quizTime--;
         timer.innerText = quizTime;
@@ -109,7 +110,7 @@ window.addEventListener('DOMContentLoaded', () => {
           }
       }
       const finalScore = document.querySelector("#score");
-      finalScore.innerHTML = 'Your final score is: ${score}!'
+      finalScore.innerHTML = `Your final score is: ${score}!`
     });
   };
   const btnSubmit = document.querySelector("#btnSubmit");
