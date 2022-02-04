@@ -120,7 +120,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
       }
       const finalScore = document.querySelector("#score");
-      finalScore.innerHTML = `Your score is: ${score}`;
+      finalScore.innerHTML = `Your final score is: ${score} , thank you!`;
 
       timeLimit = 0;
       timer.innerText = 0;
