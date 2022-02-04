@@ -2,14 +2,14 @@
   JWD JavaScript Assessment
 
   This code is unfinished. You will need to study it to figure out what it does. Then you will need to use this and
-  your own code, to finish the app. 
-  
+  your own code, to finish the app.
+
   The tasks you need to do are below.
 
     TASKS TODO:
       1. Calculate the score as the total of the number of correct answers
 
-      2. Add an Event listener for the submit button, which will display the score and highlight 
+      2. Add an Event listener for the submit button, which will display the score and highlight
          the correct answers when the button is clicked. Use the code from lines 67 to 86 to help you.
 
       3. Add 2 more questions to the app (each question must have 4 options).
@@ -24,6 +24,20 @@ window.addEventListener('DOMContentLoaded', () => {
   start.addEventListener('click', function (e) {
     document.querySelector('#quizBlock').style.display = 'block';
     start.style.display = 'none';
+    let quizTime = 3;
+ const timer = document.querySelector("#time");
+
+ const quizCountDown = () => {
+      if (quizTime === 0) {
+        clearInterval(countDown);
+        calculateScore()
+      } else {
+        quizTime--;
+        timer.innerText = quizTime;
+      }
+    };
+    let countDown = setInterval(quizCountDown, 1000);
+    countDown;
   });
   // quizArray QUESTIONS & ANSWERS
   // q = QUESTION, o = OPTIONS, a = CORRECT ANSWER
@@ -44,6 +58,16 @@ window.addEventListener('DOMContentLoaded', () => {
       o: ['Sydney', 'Canberra', 'Melbourne', 'Perth'],
       a: 1,
     },
+    {
+      q: 'If there is no sun the colour of the sky would be?',
+      o: ['Blue', 'Orange', 'Black', 'Green'],
+      a: 2,
+    },
+    {
+      q: 'On which planet the life exists?',
+      o: ['Earth', 'Moon', 'Jupiter', 'None'],
+      a: 0,
+    }
   ];
 
   // function to Display the quiz questions and answers from the object
@@ -62,29 +86,35 @@ window.addEventListener('DOMContentLoaded', () => {
       quizWrap.innerHTML = quizDisplay;
     });
   };
-
   // Calculate the score
   const calculateScore = () => {
     let score = 0;
     quizArray.map((quizItem, index) => {
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i <= 4; i++) {
         //highlight the li if it is the correct answer
         let li = `li_${index}_${i}`;
         let r = `radio_${index}_${i}`;
         liElement = document.querySelector('#' + li);
         radioElement = document.querySelector('#' + r);
 
-        if (quizItem.a == i) {
+        if (quizItem.a === i) {
           //change background color of li element here
+          liElement.style.backgroundColor = "#3a8c66";
         }
 
-        if (radioElement.checked) {
+
+          // in every loop, the radioElement increments/changes as there are 4
           // code for task 1 goes here
-        }
+          if (quizItem.a === i) {
+            score++;
+          }
       }
+      const finalScore = document.querySelector("#score");
+      finalScore.innerHTML = `Your final score is: ${score}!`
     });
   };
-
+  const btnSubmit = document.querySelector("#btnSubmit");
+  btnSubmit.addEventListener("click", calculateScore);
   // call the displayQuiz function
   displayQuiz();
 });
