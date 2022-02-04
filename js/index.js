@@ -119,8 +119,8 @@ window.addEventListener("DOMContentLoaded", () => {
           }
         }
       }
-      const scoreText = document.querySelector("#score");
-      scoreText.innerHTML = `Your score is${score}`;
+      const finalScore = document.querySelector("#score");
+      finalScore.innerHTML = `Your score is: ${score}`;
 
       timeLimit = 0;
       timer.innerText = 0;
