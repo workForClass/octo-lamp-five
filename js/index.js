@@ -147,7 +147,7 @@ window.addEventListener('DOMContentLoaded', () => {
             //console.log('Testing')
           }else {
             score++;
-            scoreHTML.innerHTML = score;
+            scoreHTML.innerHTML = `Your current score is ${score} / 5.`;
             console.log(`Your current score is ${score}.`); 
           }
       }
