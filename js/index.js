@@ -24,7 +24,33 @@ window.addEventListener('DOMContentLoaded', () => {
   start.addEventListener('click', function (e) {
     document.querySelector('#quizBlock').style.display = 'block';
     start.style.display = 'none';
+
+    function startTimer(duration, display) {
+      var timer = duration, minutes, seconds;
+      setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+  
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+  
+        display.textContent = minutes + ":" + seconds;
+  
+        if (--timer < 0) {
+          timer = duration;
+          e.preventDefault()
+          calculateScore(e)
+        }
+      }, 1000);
+    }
+  
+      var fiveMinutes = 60 * 5,
+      display = document.querySelector('#time');
+      startTimer(fiveMinutes, display);
+    
   });
+
+
   // quizArray QUESTIONS & ANSWERS
   // q = QUESTION, o = OPTIONS, a = CORRECT ANSWER
   // Basic ideas from https://code-boxx.com/simple-javascript-quiz/
@@ -44,12 +70,41 @@ window.addEventListener('DOMContentLoaded', () => {
       o: ['Sydney', 'Canberra', 'Melbourne', 'Perth'],
       a: 1,
     },
+    {
+      q: "What is an Aubergine?",
+      o: [
+        "Eggplant",
+        "Toothpaste",
+        "Clothing Brand",
+        "A beautiful place on the French Riviera."
+      ],
+      a: 0
+    },
+    {
+      q: "How many pies would you need to feed 21 travellers, if each pie is going to fill 3 hungry travellers?",
+      o: [
+        10,
+        4,
+        7,
+        "Never enough pies!"
+      ],
+      a: 2
+    }
   ];
-
   // function to Display the quiz questions and answers from the object
   const displayQuiz = () => {
     const quizWrap = document.querySelector('#quizWrap');
     let quizDisplay = '';
+    let btnSubmit = `<div>
+                        <button type="submit" class="btn btn-primary" id="btnSubmit">
+                          Submit Quiz
+                        </button>
+                        <button type="reset" class="btn btn-primary" id="btnReset">
+                          Reset Quiz
+                        </button>
+                        <span id="score"></span>
+                     </div>`;
+
     quizArray.map((quizItem, index) => {
       quizDisplay += `<ul class="list-group">
                    Q - ${quizItem.q}
@@ -59,32 +114,50 @@ window.addEventListener('DOMContentLoaded', () => {
                     <li class="list-group-item"  id="li_${index}_3"><input type="radio" name="radio${index}" id="radio_${index}_3"> ${quizItem.o[3]}</li>
                     </ul>
                     <div>&nbsp;</div>`;
-      quizWrap.innerHTML = quizDisplay;
+      quizWrap.innerHTML = quizDisplay + btnSubmit;
     });
+    quizWrap.addEventListener('submit', calculateScore);
   };
 
   // Calculate the score
-  const calculateScore = () => {
+  const calculateScore = (e) => {
     let score = 0;
+    let scoreHTML = document.querySelector("#score");
     quizArray.map((quizItem, index) => {
+
       for (let i = 0; i < 4; i++) {
         //highlight the li if it is the correct answer
         let li = `li_${index}_${i}`;
         let r = `radio_${index}_${i}`;
         liElement = document.querySelector('#' + li);
         radioElement = document.querySelector('#' + r);
+        //console.log(quizItem.a)
 
-        if (quizItem.a == i) {
+        if (radioElement.checked >= 0) {
+          e.preventDefault()
+        }
+        if (quizItem.a === i) {
           //change background color of li element here
-        }
-
-        if (radioElement.checked) {
-          // code for task 1 goes here
-        }
+          liElement.style.backgroundColor = "lightgreen";
+          radioElement.value = 'true';
+          //console.log(radioElement.value)
+        
+          if (radioElement.checked === quizItem.a) {
+            // code for task 1 goes here
+            //console.log('Testing')
+          }else {
+            score++;
+            scoreHTML.innerHTML = score;
+            console.log(`Your current score is ${score}.`); 
+          }
+      }
       }
     });
   };
-
   // call the displayQuiz function
   displayQuiz();
+
+  // Reset Button
+  let btnReset = document.querySelector('#btnReset');
+  btnReset.addEventListener('click', function(){window.location.reload()});
 });
