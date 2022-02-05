@@ -36,15 +36,17 @@ window.addEventListener('DOMContentLoaded', () => {
   
         display.textContent = minutes + ":" + seconds;
   
-        if (--timer < 0) {
+        if (--timer === -1) {
           timer = duration;
-          e.preventDefault()
+          e.preventDefault();
+          e.stopPropagation();
+          display.innerHTML = 'Times Up!' * minutes
           calculateScore(e)
         }
       }, 1000);
     }
   
-      var fiveMinutes = 60 * 5,
+      var fiveMinutes = 60 * 5/20;
       display = document.querySelector('#time');
       startTimer(fiveMinutes, display);
     
@@ -140,12 +142,11 @@ window.addEventListener('DOMContentLoaded', () => {
           //change background color of li element here
           liElement.style.backgroundColor = "lightgreen";
           radioElement.value = 'true';
-          //console.log(radioElement.value)
+          console.log(i)
         
-          if (radioElement.checked === quizItem.a) {
+          if (radioElement.checked) {
             // code for task 1 goes here
-            //console.log('Testing')
-          }else {
+            console.log(quizItem.a);
             score++;
             scoreHTML.innerHTML = `Your current score is ${score} / 5.`;
             console.log(`Your current score is ${score}.`); 
